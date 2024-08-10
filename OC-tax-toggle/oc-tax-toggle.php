@@ -16,32 +16,50 @@ function tax_toggle_shortcode() {
     ob_start();
     ?>
     <div class="tax-toggle">
-        <button id="include-vat-button" data-include-tax="yes" class="<?php echo $include_tax === 'yes' ? 'active' : ''; ?>">
-            Include VAT
-        </button>
-        <button id="exclude-vat-button" data-include-tax="no" class="<?php echo $include_tax === 'no' ? 'active' : ''; ?>">
-            Exclude VAT
-        </button>
+       
+        <a href="javascript:void(0)" id="exclude-vat-button" data-include-tax="no" class="<?php echo $include_tax === 'no' ? 'active' : ''; ?>">
+            FÖRETAG
+        </a>
+		 <a href="javascript:void(0)" id="include-vat-button" data-include-tax="yes" class="<?php echo $include_tax === 'yes' ? 'active' : ''; ?>">
+           PRIVAT
+        </a>
     </div>
     <script type="text/javascript">
-        document.addEventListener('DOMContentLoaded', function() {
-            var includeButton = document.getElementById('include-vat-button');
-            var excludeButton = document.getElementById('exclude-vat-button');
+       document.addEventListener('DOMContentLoaded', function() {
+			var includeButton = document.getElementById('include-vat-button');
+			var excludeButton = document.getElementById('exclude-vat-button');
 
-            includeButton.addEventListener('click', function() {
-                document.cookie = 'include_tax=yes;path=/';
-                location.reload();
-            });
+			includeButton.addEventListener('click', function() {
+				document.cookie = 'include_tax=yes;path=/';
+				triggerCartUpdate();
+			});
 
-            excludeButton.addEventListener('click', function() {
-                document.cookie = 'include_tax=no;path=/';
-                location.reload();
-            });
-        });
+			excludeButton.addEventListener('click', function() {
+				document.cookie = 'include_tax=no;path=/';
+				triggerCartUpdate();
+			});
+
+			function triggerCartUpdate() {
+				jQuery('body').trigger('wc_fragment_refresh');
+				location.reload();
+			}
+		});
+
     </script>
     <style>
-        .tax-toggle button.active {
+		#exclude-vat-button{
+			    border-right: 1px solid #919191;
+    padding-right: 5px;
+    margin-right: 5px;
+		}
+		.tax-toggle a{
+			color:#929292;
+			font-size: 13px;
+		}
+		
+        .tax-toggle a.active {
             font-weight: bold;
+			color:#555555;
         }
     </style>
     <?php
